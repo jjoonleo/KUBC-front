@@ -1,0 +1,23 @@
+services:
+  frontend:
+    image: jjoonleo/kubc-frontend
+    container_name: frontend
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    command: npm start
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    driver: bridge
