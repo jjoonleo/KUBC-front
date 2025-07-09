@@ -56,7 +56,7 @@ const ScheduleTile: React.FC<ScheduleTileProps> = ({ event }) => {
           <div className={styles.uploadDate}>
             {formatDateTime(event.uploadAt).date}
           </div>
-          <div className={styles.state}>{event.state}</div>
+          <div className={styles.state}>{event.status}</div>
         </div>
       </div>
     </Link>

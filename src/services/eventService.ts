@@ -16,7 +16,7 @@ export class EventService {
   static async createEvent(eventData: EventCreateRequest): Promise<Event> {
     try {
       const response = await apiClient.post<EventResponse>(
-        "/api/events",
+        "/events",
         eventData
       );
 
@@ -35,7 +35,7 @@ export class EventService {
     limit: number = 10
   ): Promise<EventListResponse> {
     try {
-      const response = await apiClient.get<EventListResponse>("/api/events", {
+      const response = await apiClient.get<EventListResponse>("/events", {
         params: { page, limit },
       });
 
@@ -48,7 +48,7 @@ export class EventService {
 
   static async getEventById(id: string): Promise<Event> {
     try {
-      const response = await apiClient.get<EventResponse>(`/api/events/${id}`);
+      const response = await apiClient.get<EventResponse>(`/events/${id}`);
 
       const validatedResponse = ApiResponseWrapper.validateResponse<Event>(
         response.data
@@ -66,7 +66,7 @@ export class EventService {
   ): Promise<Event> {
     try {
       const response = await apiClient.put<EventResponse>(
-        `/api/events/${id}`,
+        `/events/${id}`,
         eventData
       );
 
@@ -82,7 +82,7 @@ export class EventService {
 
   static async deleteEvent(id: string): Promise<void> {
     try {
-      const response = await apiClient.delete(`/api/events/${id}`);
+      const response = await apiClient.delete(`/events/${id}`);
 
       if (response.status !== 200 && response.status !== 204) {
         throw new Error("Failed to delete event");

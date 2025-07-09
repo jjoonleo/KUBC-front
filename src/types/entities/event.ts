@@ -10,5 +10,5 @@ export interface Event {
   uploadAt: string;
   confirmedMemberAt: Date;
   authorId: string;
-  state: string;
+  status: string;
 }

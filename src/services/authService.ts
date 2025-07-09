@@ -2,9 +2,7 @@ import { apiClient } from "../utils/axios/apiClient";
 import { ApiResponse, ApiResponseWrapper } from "../utils/apiResponse";
 import { SocialLoginData } from "../types/dtos/auth";
 
-const NAVER_LOGIN_ENDPOINT =
-  process.env.REACT_APP_NAVER_LOGIN_ENDPOINT ||
-  "/api/auth/oauth2/authorization/naver";
+const NAVER_LOGIN_ENDPOINT = process.env.REACT_APP_NAVER_LOGIN_ENDPOINT!;
 
 // Re-export for backward compatibility
 export type { SocialLoginData };
@@ -22,7 +20,7 @@ export class AuthService {
 
   static async logout(): Promise<void> {
     try {
-      await apiClient.post("/api/auth/logout");
+      await apiClient.post("/auth/logout");
     } catch (error) {
       console.error("Logout error:", error);
       // Even if logout fails on backend, we'll clear local storage
@@ -35,7 +33,7 @@ export class AuthService {
   ): Promise<SocialLoginResponse> {
     try {
       const response = await apiClient.post<SocialLoginResponse>(
-        "/api/auth/refresh",
+        "/auth/refresh",
         {
           refreshToken,
         }
@@ -58,7 +56,7 @@ export class AuthService {
     try {
       // HttpOnly cookie(refresh token)를 통해 액세스토큰 요청
       const response = await apiClient.post<SocialLoginResponse>(
-        "/api/auth/social/token"
+        "/auth/social/token"
       );
 
       const validatedResponse =
@@ -83,7 +81,7 @@ export class AuthService {
 
       // 실패시 쿠키 정리 요청 (optional)
       try {
-        await apiClient.post("/api/auth/logout");
+        await apiClient.post("/auth/logout");
       } catch (logoutError) {
         console.error("Cookie cleanup failed:", logoutError);
       }

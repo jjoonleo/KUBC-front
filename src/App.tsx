@@ -11,6 +11,7 @@ import EventCreationForm from './components/EventCreation/EventCreationForm';
 import './App.css';
 
 const SocialLoginLoadingScreen: React.FC = () => (
+  
   <div style={{
     display: 'flex',
     justifyContent: 'center',
