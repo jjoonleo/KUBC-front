@@ -66,6 +66,16 @@
   transition: background 0.3s ease;
 }
 
+.globalError {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
 .form h2 {
   color: #8B0029;
   margin: 0 0 30px 0;
@@ -166,6 +176,14 @@
   background: linear-gradient(135deg, #6B001F, #8B0029);
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(139, 0, 41, 0.3);
+}
+
+.nextBtn:disabled,
+.submitBtn:disabled,
+.backBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 @media (max-width: 768px) {

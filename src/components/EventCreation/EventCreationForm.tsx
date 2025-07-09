@@ -3,8 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { addEvent } from '../../store/slices/eventsSlice';
-import { Event } from '../../store/slices/eventsSlice';
-import { AuthService } from '../../services/authService';
+import { EventService, EventCreateRequest } from '../../services/eventService';
 import styles from './EventCreationForm.module.css';
 
 interface EventFormData {
@@ -20,6 +19,7 @@ const EventCreationForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<EventFormData>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -37,6 +37,7 @@ const EventCreationForm: React.FC = () => {
 
   const onSubmitStep1: SubmitHandler<Pick<EventFormData, 'dateTime' | 'menuId' | 'place' | 'maxParticipants'>> = (data) => {
     setFormData(prev => ({ ...prev, ...data }));
+    setError(null);
     setCurrentStep(2);
   };
 
@@ -45,33 +46,30 @@ const EventCreationForm: React.FC = () => {
     
     try {
       setSubmitting(true);
+      setError(null);
       
-      // Create event object
-      const newEvent: Event = {
-        id: Date.now().toString(), // Temporary ID - backend will assign real ID
+      // Create event request data
+      const eventRequest: EventCreateRequest = {
         dateTime: completeFormData.dateTime,
         menuId: completeFormData.menuId,
         place: completeFormData.place,
         maxParticipants: completeFormData.maxParticipants,
         subject: completeFormData.subject,
         content: completeFormData.content,
-        uploadAt: new Date().toISOString(),
       };
 
-      // TODO: Replace with actual API call to backend
-      // const response = await fetch(`${API_BASE_URL}/api/events`, {
-      //   method: 'POST',
-      //   headers: AuthService.getAuthHeaders(),
-      //   body: JSON.stringify(newEvent),
-      // });
+      // Call backend API using axios
+      const newEvent = await EventService.createEvent(eventRequest);
       
-      // For now, just add to Redux store
+      // Add to Redux store for immediate UI update
       dispatch(addEvent(newEvent));
+      
+      // Navigate to events list
       navigate('/events');
       
     } catch (error) {
       console.error('Failed to create event:', error);
-      alert('Failed to create event. Please try again.');
+      setError(error instanceof Error ? error.message : 'Failed to create event. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -79,6 +77,7 @@ const EventCreationForm: React.FC = () => {
 
   const goBack = () => {
     setCurrentStep(1);
+    setError(null);
   };
 
   return (
@@ -92,6 +91,13 @@ const EventCreationForm: React.FC = () => {
             <div className={`${styles.step} ${currentStep >= 2 ? styles.active : ''}`}>2</div>
           </div>
         </div>
+
+        {/* Global error display */}
+        {error && (
+          <div className={styles.globalError}>
+            {error}
+          </div>
+        )}
 
         {currentStep === 1 && (
           <form onSubmit={handleSubmitStep1(onSubmitStep1)} className={styles.form}>

@@ -1,13 +1,19 @@
-const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+import { apiClient } from "../utils/axios/apiClient";
+import {
+  ApiResponse,
+  ApiResponseWrapper,
+  ApiError,
+} from "../utils/apiResponse";
+
 const NAVER_LOGIN_ENDPOINT =
   process.env.REACT_APP_NAVER_LOGIN_ENDPOINT ||
   "/api/auth/oauth2/authorization/naver";
 
-export interface LoginResponse {
-  success: boolean;
+export interface SocialLoginData {
   token: string;
   tokenType: string;
+  memberId: string;
+  memberRole: string;
   userInfo: {
     id: string;
     nickname: string;
@@ -17,68 +23,89 @@ export interface LoginResponse {
   };
 }
 
+export type SocialLoginResponse = ApiResponse<SocialLoginData>;
+
 export class AuthService {
-  static async naverLogin(): Promise<LoginResponse> {
-    try {
-      const response = await fetch(`${API_BASE_URL}${NAVER_LOGIN_ENDPOINT}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Include cookies for session management
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data: LoginResponse = await response.json();
-
-      if (!data.success) {
-        throw new Error("Login failed");
-      }
-
-      return data;
-    } catch (error) {
-      console.error("Naver login error:", error);
-      throw error;
-    }
+  // OAuth flow - redirect to backend which redirects to Naver
+  static initiateNaverLogin(): void {
+    // For OAuth, we need full browser redirect, not AJAX
+    const baseUrl = apiClient.defaults.baseURL;
+    const loginUrl = `${baseUrl!.replace(/\/$/, "")}${NAVER_LOGIN_ENDPOINT}`;
+    console.log("Redirecting to Naver OAuth:", loginUrl);
+    window.location.href = loginUrl;
   }
 
   static async logout(): Promise<void> {
     try {
-      const token = localStorage.getItem("auth_token");
-      const tokenType = localStorage.getItem("token_type");
-
-      if (token && tokenType) {
-        await fetch(`${API_BASE_URL}/api/auth/logout`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${tokenType} ${token}`,
-          },
-          credentials: "include",
-        });
-      }
+      await apiClient.post("/api/auth/logout");
     } catch (error) {
       console.error("Logout error:", error);
       // Even if logout fails on backend, we'll clear local storage
+      throw error;
     }
   }
 
-  static getAuthHeaders(): Record<string, string> {
-    const token = localStorage.getItem("auth_token");
-    const tokenType = localStorage.getItem("token_type");
+  static async refreshToken(
+    refreshToken: string
+  ): Promise<SocialLoginResponse> {
+    try {
+      const response = await apiClient.post<SocialLoginResponse>(
+        "/api/auth/refresh",
+        {
+          refreshToken,
+        }
+      );
 
-    if (token && tokenType) {
-      return {
-        Authorization: `${tokenType} ${token}`,
-        "Content-Type": "application/json",
-      };
+      return ApiResponseWrapper.validateResponse<SocialLoginData>(
+        response.data
+      );
+    } catch (error) {
+      console.error("Token refresh error:", error);
+      throw error;
     }
+  }
 
-    return {
-      "Content-Type": "application/json",
-    };
+  /**
+   * 소셜로그인 성공시, HttpOnly Cookie를 통해 액세스토큰을 발급받습니다.
+   * redirectedFromSocialLogin 파라미터가 있을 때 호출됩니다.
+   */
+  static async socialLoginAccessToken(): Promise<void> {
+    try {
+      // HttpOnly cookie(refresh token)를 통해 액세스토큰 요청
+      const response = await apiClient.post<SocialLoginResponse>(
+        "/api/auth/social/token"
+      );
+
+      const validatedResponse =
+        ApiResponseWrapper.validateResponse<SocialLoginData>(response.data);
+      const { token, tokenType, memberId, memberRole, userInfo } =
+        validatedResponse.data;
+
+      // 로컬스토리지에 저장
+      localStorage.setItem("auth_token", token);
+      localStorage.setItem("token_type", tokenType);
+      localStorage.setItem("memberId", memberId);
+      localStorage.setItem("memberRole", memberRole);
+      localStorage.setItem("user_info", JSON.stringify(userInfo));
+
+      // URL에서 redirectedFromSocialLogin 파라미터 제거
+      const url = new URL(window.location.href);
+      url.searchParams.delete("redirectedFromSocialLogin");
+      const cleanUrl = url.pathname + url.search;
+      window.history.replaceState({}, document.title, cleanUrl);
+    } catch (error) {
+      console.error("Social login access token exchange error:", error);
+
+      // 실패시 쿠키 정리 요청 (optional)
+      try {
+        await apiClient.post("/api/auth/logout");
+      } catch (logoutError) {
+        console.error("Cookie cleanup failed:", logoutError);
+      }
+
+      // 로컬스토리지 정리 (navigation is handled by the calling component)
+      localStorage.clear();
+      throw error;
+    }
   }
 }
