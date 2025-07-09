@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Event } from '../../store/slices/eventsSlice';
 import styles from './ScheduleTile.module.css';
+import { getMenuTypeLabel } from '../../types/entities/event';
 
 interface ScheduleTileProps {
   event: Event;
@@ -30,7 +31,7 @@ const ScheduleTile: React.FC<ScheduleTileProps> = ({ event }) => {
       <div className={styles.middleSection}>
         <div className={styles.titleRow}>
           <h3 className={styles.title}>{event.subject}</h3>
-          <div className={styles.menuBadge}>Menu #{event.menuId}</div>
+          <div className={styles.menuBadge}>{getMenuTypeLabel(event.menuId)}</div>
         </div>
         
         <div className={styles.detailsRow}>
@@ -54,7 +55,7 @@ const ScheduleTile: React.FC<ScheduleTileProps> = ({ event }) => {
       <div className={styles.rightSection}>
         <div className={styles.status}>
           <div className={styles.uploadDate}>
-            {formatDateTime(event.uploadAt).date}
+            {formatDateTime(event.uploadAt).date} {formatDateTime(event.uploadAt).time}
           </div>
           <div className={styles.state}>{event.status}</div>
         </div>
