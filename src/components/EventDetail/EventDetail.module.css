@@ -1,0 +1,261 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f4f6, #faf7f8);
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.backBtn {
+  color: #8B0029;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(139, 0, 41, 0.2);
+}
+
+.backBtn:hover {
+  background: rgba(139, 0, 41, 0.1);
+  color: #6B001F;
+  transform: translateY(-1px);
+}
+
+.menuBadge {
+  background: linear-gradient(135deg, #8B0029, #B91C43);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(139, 0, 41, 0.2);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: #8B0029;
+}
+
+.eventCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(139, 0, 41, 0.1);
+  overflow: hidden;
+  border: 1px solid rgba(139, 0, 41, 0.05);
+}
+
+.eventHeader {
+  padding: 40px 40px 0 40px;
+}
+
+.title {
+  color: #8B0029;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0 0 30px 0;
+  line-height: 1.2;
+}
+
+.eventMeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  background: linear-gradient(135deg, #faf7f8, #f5f1f3);
+  border-radius: 12px;
+  border: 2px solid rgba(139, 0, 41, 0.1);
+  transition: all 0.3s ease;
+}
+
+.metaItem:hover {
+  border-color: rgba(139, 0, 41, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 0, 41, 0.1);
+}
+
+.metaIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.metaLabel {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.metaValue {
+  font-size: 1.1rem;
+  color: #8B0029;
+  font-weight: 600;
+}
+
+.content {
+  padding: 0 40px 40px 40px;
+}
+
+.content h2 {
+  color: #8B0029;
+  font-size: 1.5rem;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(139, 0, 41, 0.1);
+}
+
+.contentText {
+  line-height: 1.7;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.contentText p {
+  margin: 0 0 16px 0;
+}
+
+.contentText p:last-child {
+  margin-bottom: 0;
+}
+
+.footer {
+  padding: 24px 40px;
+  background: linear-gradient(135deg, #faf7f8, #f5f1f3);
+  border-top: 1px solid rgba(139, 0, 41, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footerLabel {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.footerValue {
+  color: #8B0029;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.editBtn,
+.deleteBtn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.editBtn {
+  background: linear-gradient(135deg, #B91C43, #E8405A);
+  color: white;
+  box-shadow: 0 2px 8px rgba(185, 28, 67, 0.2);
+}
+
+.editBtn:hover {
+  background: linear-gradient(135deg, #8B0029, #B91C43);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(185, 28, 67, 0.3);
+}
+
+.deleteBtn {
+  background: #dc3545;
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+}
+
+.deleteBtn:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .backBtn {
+    text-align: center;
+  }
+
+  .eventCard {
+    border-radius: 12px;
+  }
+
+  .eventHeader {
+    padding: 24px 24px 0 24px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .eventMeta {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .metaItem {
+    padding: 16px;
+  }
+
+  .content {
+    padding: 0 24px 24px 24px;
+  }
+
+  .footer {
+    padding: 20px 24px;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .editBtn,
+  .deleteBtn {
+    flex: 1;
+    padding: 12px 16px;
+  }
+}

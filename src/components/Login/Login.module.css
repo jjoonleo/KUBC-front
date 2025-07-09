@@ -1,0 +1,124 @@
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8B0029 0%, #B91C43 50%, #E8405A 100%);
+  padding: 20px;
+}
+
+.loginCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(139, 0, 41, 0.2);
+  padding: 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(139, 0, 41, 0.1);
+}
+
+.logo h1 {
+  font-size: 2.5rem;
+  color: #8B0029;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(139, 0, 41, 0.1);
+}
+
+.logo p {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0 0 32px 0;
+}
+
+.loginContent h2 {
+  color: #8B0029;
+  margin: 0 0 12px 0;
+  font-size: 1.5rem;
+}
+
+.loginContent p {
+  color: #666;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.naverLoginBtn {
+  width: 100%;
+  background: #03c75a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 56px;
+  box-shadow: 0 4px 12px rgba(3, 199, 90, 0.2);
+  margin-bottom: 16px;
+}
+
+.naverLoginBtn:hover {
+  background: #02b351;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(3, 199, 90, 0.3);
+}
+
+.naverLoginBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.naverLogo {
+  width: 20px;
+  height: 20px;
+}
+
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.apiInfo {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.apiInfo small {
+  color: #999;
+  font-size: 0.75rem;
+  word-break: break-all;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
