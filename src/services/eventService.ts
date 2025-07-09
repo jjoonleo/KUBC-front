@@ -1,20 +1,14 @@
 import { apiClient } from "../utils/axios/apiClient";
-import { Event } from "../store/slices/eventsSlice";
+import { Event } from "../types/entities/event";
+import { EventCreateRequest } from "../types/dtos/event";
 import {
   ApiResponse,
   PaginatedApiResponse,
   ApiResponseWrapper,
 } from "../utils/apiResponse";
 
-export interface EventCreateRequest {
-  dateTime: string;
-  menuId: number;
-  place: string;
-  maxParticipants: number;
-  subject: string;
-  content: string;
-}
-
+// Re-export for backward compatibility
+export type { EventCreateRequest };
 export type EventResponse = ApiResponse<Event>;
 export type EventListResponse = PaginatedApiResponse<Event>;
 

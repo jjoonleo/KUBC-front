@@ -1,23 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Event } from "../../types/entities/event";
+import { EventsState } from "../../types/dtos/event";
 
-export interface Event {
-  id: string;
-  dateTime: string;
-  menuId: number;
-  place: string;
-  maxParticipants: number;
-  content: string;
-  subject: string;
-  uploadAt: string;
-  createdBy?: string;
-}
-
-interface EventsState {
-  events: Event[];
-  currentEvent: Event | null;
-  loading: boolean;
-  error: string | null;
-}
+// Re-export for backward compatibility
+export type { Event };
 
 const initialState: EventsState = {
   events: [],

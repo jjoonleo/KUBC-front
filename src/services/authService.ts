@@ -1,28 +1,13 @@
 import { apiClient } from "../utils/axios/apiClient";
-import {
-  ApiResponse,
-  ApiResponseWrapper,
-  ApiError,
-} from "../utils/apiResponse";
+import { ApiResponse, ApiResponseWrapper } from "../utils/apiResponse";
+import { SocialLoginData } from "../types/dtos/auth";
 
 const NAVER_LOGIN_ENDPOINT =
   process.env.REACT_APP_NAVER_LOGIN_ENDPOINT ||
   "/api/auth/oauth2/authorization/naver";
 
-export interface SocialLoginData {
-  token: string;
-  tokenType: string;
-  memberId: string;
-  memberRole: string;
-  userInfo: {
-    id: string;
-    nickname: string;
-    name: string;
-    email: string;
-    gender: string;
-  };
-}
-
+// Re-export for backward compatibility
+export type { SocialLoginData };
 export type SocialLoginResponse = ApiResponse<SocialLoginData>;
 
 export class AuthService {

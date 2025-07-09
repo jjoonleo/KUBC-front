@@ -3,17 +3,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { addEvent } from '../../store/slices/eventsSlice';
-import { EventService, EventCreateRequest } from '../../services/eventService';
+import { EventService } from '../../services/eventService';
+import { EventFormData, EventCreateRequest } from '../../types/dtos/event';
 import styles from './EventCreationForm.module.css';
-
-interface EventFormData {
-  dateTime: string;
-  menuId: number;
-  place: string;
-  maxParticipants: number;
-  subject: string;
-  content: string;
-}
 
 const EventCreationForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);

@@ -1,23 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AuthService } from "../../services/authService";
 import { NavigateFunction } from "react-router-dom";
-
-interface User {
-  id: string;
-  nickname: string;
-  name: string;
-  email: string;
-  gender: string;
-}
-
-interface AuthState {
-  isAuthenticated: boolean;
-  user: User | null;
-  token: string | null;
-  tokenType: string | null;
-  loading: boolean;
-  error: string | null;
-}
+import { AuthState } from "../../types/dtos/auth";
 
 // Check localStorage immediately when creating initial state
 const getInitialAuthState = (): AuthState => {
