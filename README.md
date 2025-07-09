@@ -1,70 +1,143 @@
-# Getting Started with Create React App
+# KUBC Event Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Korea University Badminton Club Event Management System built with React, Redux, React Router, and react-hook-form.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### 🔐 Authentication
 
-### `npm start`
+- Naver Login integration (simulated)
+- Protected routes - redirects unauthenticated users to login
+- Auto-redirect after successful login
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 📅 Event Management
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Multi-step Event Creation Form**
 
-### `npm test`
+  - Page 1: Basic information (dateTime, menuId, place, maxParticipants)
+  - Page 2: Content creation (subject, content)
+  - Form validation with react-hook-form
+  - Responsive design with module CSS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Event List View**
 
-### `npm run build`
+  - Grid layout showing all events
+  - Event cards with preview information
+  - Empty state with call-to-action
+  - Responsive design for mobile
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Event Detail View**
+  - Full event information display
+  - Beautifully formatted date/time
+  - Placeholder edit/delete functionality
+  - Back navigation to list
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Framework**: React 19.1.0 with TypeScript
+- **State Management**: Redux Toolkit with React-Redux
+- **Routing**: React Router v7.6.3
+- **Forms**: react-hook-form
+- **Styling**: CSS Modules
+- **Development**: Create React App
 
-### `npm run eject`
+## Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+src/
+├── components/
+│   ├── EventCreation/
+│   │   ├── EventCreationForm.tsx
+│   │   └── EventCreationForm.module.css
+│   ├── EventDetail/
+│   │   ├── EventDetail.tsx
+│   │   └── EventDetail.module.css
+│   ├── EventList/
+│   │   ├── EventList.tsx
+│   │   └── EventList.module.css
+│   ├── Login/
+│   │   ├── Login.tsx
+│   │   └── Login.module.css
+│   └── PrivateRoute/
+│       └── PrivateRoute.tsx
+├── store/
+│   ├── index.ts
+│   ├── hooks.ts
+│   └── slices/
+│       ├── authSlice.ts
+│       └── eventsSlice.ts
+├── App.tsx
+└── index.tsx
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Event Data Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```typescript
+interface Event {
+  id: string;
+  dateTime: string; // ISO format: "2025-07-15T14:30:00"
+  menuId: number; // Menu identifier
+  place: string; // e.g., "KUBC Meeting Room A"
+  maxParticipants: number; // Maximum number of participants
+  content: string; // Detailed event description
+  subject: string; // Event title
+  uploadAt: string; // Creation timestamp
+  createdBy?: string; // Optional: creator identifier
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Getting Started
 
-## Learn More
+1. **Install dependencies**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm install
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Start development server**
 
-### Code Splitting
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. **Build for production**
+   ```bash
+   npm run build
+   ```
 
-### Analyzing the Bundle Size
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. **Login**: Click "네이버로 로그인" on the login page (simulated login)
+2. **Create Event**: Click "새 이벤트 만들기" → Fill form → Submit
+3. **View Events**: Browse events in the main list
+4. **Event Details**: Click any event card to view full details
 
-### Making a Progressive Web App
+## Authentication Flow
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- All routes except `/login` are protected
+- Unauthenticated users are redirected to login
+- Login simulation creates a mock user session
+- Redux manages authentication state
 
-### Advanced Configuration
+## Form Validation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- All fields are required with appropriate validation
+- Date/time input ensures future events
+- Numeric fields have minimum value constraints
+- Multi-step form preserves data between steps
 
-### Deployment
+## Responsive Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Mobile-first approach with CSS modules
+- Responsive grid layouts
+- Touch-friendly button sizes
+- Optimized for tablets and mobile devices
 
-### `npm run build` fails to minify
+## Future Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Real Naver Login API integration
+- Event edit/delete functionality
+- User management and roles
+- Event participant management
+- Image upload for events
+- Calendar view integration
