@@ -36,7 +36,7 @@ const eventsSlice = createSlice({
         state.events[index] = action.payload;
       }
     },
-    deleteEvent: (state, action: PayloadAction<string>) => {
+    deleteEvent: (state, action: PayloadAction<number>) => {
       state.events = state.events.filter(
         (event) => event.id !== action.payload
       );

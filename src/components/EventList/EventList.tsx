@@ -8,8 +8,8 @@ import styles from './EventList.module.css';
 const EventList: React.FC = () => {
   const { events, loading } = useAppSelector((state) => state.events);
 
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime);
+  const formatDateTime = (dateTime: Date | string) => {
+    const date = dateTime instanceof Date ? dateTime : new Date(dateTime);
     return {
       date: date.toLocaleDateString('ko-KR'),
       time: date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
