@@ -1,4 +1,4 @@
-import { Event } from "../entities/event";
+import { Event, MenuType } from "../entities/event";
 
 export interface EventsState {
   events: Event[];
@@ -17,18 +17,23 @@ export interface EventsState {
 
 export interface EventFormData {
   dateTime: string;
-  menuId: number;
+  menuId: MenuType;
   place: string;
   maxParticipants: number;
   subject: string;
   content: string;
+  uploadAt: string;
+  confirmedMemberAt: string;
 }
 
 export interface EventCreateRequest {
   dateTime: string;
-  menuId: number;
+  menuId: MenuType;
   place: string;
   maxParticipants: number;
   subject: string;
   content: string;
+  uploadAt: Date;
+  confirmedMemberAt: Date;
+  cafeArticleId?: number;
 }
