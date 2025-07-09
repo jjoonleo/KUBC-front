@@ -1,25 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { fetchEvents } from '../../store/slices/eventsSlice';
 import UserMenu from '../UserMenu/UserMenu';
+import ScheduleTile from './ScheduleTile';
 import type { Event } from '../../store/slices/eventsSlice';
 import styles from './EventList.module.css';
 
 const EventList: React.FC = () => {
-  const { events, loading } = useAppSelector((state) => state.events);
+  const dispatch = useAppDispatch();
+  const { events, loading, error } = useAppSelector((state) => state.events);
 
-  const formatDateTime = (dateTime: Date | string) => {
-    const date = dateTime instanceof Date ? dateTime : new Date(dateTime);
-    return {
-      date: date.toLocaleDateString('ko-KR'),
-      time: date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
-    };
-  };
+  // Fetch events when component mounts
+  useEffect(() => {
+    dispatch(fetchEvents({ page: 1, limit: 20 }));
+  }, [dispatch]);
 
   if (loading) {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>
+          <h2>오류가 발생했습니다</h2>
+          <p>{error}</p>
+          <button 
+            onClick={() => dispatch(fetchEvents({ page: 1, limit: 20 }))}
+            className={styles.retryBtn}
+          >
+            다시 시도
+          </button>
+        </div>
       </div>
     );
   }
@@ -48,54 +65,10 @@ const EventList: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className={styles.eventGrid}>
-          {events.map((event: Event) => {
-            const { date, time } = formatDateTime(event.dateTime);
-            return (
-              <Link 
-                key={event.id} 
-                to={`/events/${event.id}`} 
-                className={styles.eventCard}
-              >
-                <div className={styles.eventHeader}>
-                  <h3 className={styles.eventTitle}>{event.subject}</h3>
-                  <div className={styles.eventMenu}>Menu #{event.menuId}</div>
-                </div>
-                
-                <div className={styles.eventDetails}>
-                  <div className={styles.eventDetail}>
-                    <span className={styles.detailIcon}>📅</span>
-                    <span>{date}</span>
-                  </div>
-                  <div className={styles.eventDetail}>
-                    <span className={styles.detailIcon}>⏰</span>
-                    <span>{time}</span>
-                  </div>
-                  <div className={styles.eventDetail}>
-                    <span className={styles.detailIcon}>📍</span>
-                    <span>{event.place}</span>
-                  </div>
-                  <div className={styles.eventDetail}>
-                    <span className={styles.detailIcon}>👥</span>
-                    <span>최대 {event.maxParticipants}명</span>
-                  </div>
-                </div>
-                
-                <div className={styles.eventContent}>
-                  <p>{event.content.length > 100 ? 
-                    `${event.content.substring(0, 100)}...` : 
-                    event.content}
-                  </p>
-                </div>
-                
-                <div className={styles.eventFooter}>
-                  <span className={styles.uploadDate}>
-                    {formatDateTime(event.uploadAt).date} 에 생성됨
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+        <div className={styles.eventList}>
+          {events.map((event: Event) => (
+            <ScheduleTile key={event.id} event={event} />
+          ))}
         </div>
       )}
     </div>

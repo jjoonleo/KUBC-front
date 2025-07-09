@@ -5,6 +5,14 @@ export interface EventsState {
   currentEvent: Event | null;
   loading: boolean;
   error: string | null;
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages?: number;
+    hasNext?: boolean;
+    hasPrev?: boolean;
+  } | null;
 }
 
 export interface EventFormData {

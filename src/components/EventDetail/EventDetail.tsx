@@ -13,7 +13,7 @@ const EventDetail: React.FC = () => {
 
   useEffect(() => {
     if (id && events.length > 0) {
-      const event = events.find((event: Event) => event.id === id);
+      const event = events.find((event: Event) => event.id === Number(id));
       if (event) {
         dispatch(setCurrentEvent(event));
       } else {
@@ -22,8 +22,8 @@ const EventDetail: React.FC = () => {
     }
   }, [id, events, dispatch, navigate]);
 
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime);
+  const formatDateTime = (dateTime: Date | string) => {
+    const date = dateTime instanceof Date ? dateTime : new Date(dateTime);
     return {
       date: date.toLocaleDateString('ko-KR', { 
         year: 'numeric', 

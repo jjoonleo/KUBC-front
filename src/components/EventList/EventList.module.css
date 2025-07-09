@@ -59,6 +59,46 @@
   color: #8B0029;
 }
 
+.error {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(139, 0, 41, 0.1);
+  border: 1px solid rgba(139, 0, 41, 0.05);
+}
+
+.error h2 {
+  color: #8B0029;
+  margin: 0 0 12px 0;
+  font-size: 1.5rem;
+}
+
+.error p {
+  color: #666;
+  margin: 0 0 24px 0;
+  font-size: 1rem;
+}
+
+.retryBtn {
+  background: linear-gradient(135deg, #B91C43, #E8405A);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(185, 28, 67, 0.2);
+}
+
+.retryBtn:hover {
+  background: linear-gradient(135deg, #8B0029, #B91C43);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(185, 28, 67, 0.3);
+}
+
 .emptyState {
   text-align: center;
   padding: 80px 20px;
@@ -105,92 +145,13 @@
   box-shadow: 0 6px 20px rgba(185, 28, 67, 0.3);
 }
 
-.eventGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
-}
-
-.eventCard {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(139, 0, 41, 0.08);
-  padding: 24px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.eventCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(139, 0, 41, 0.15);
-  border-color: #8B0029;
-}
-
-.eventHeader {
+.eventList {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 0;
 }
 
-.eventTitle {
-  color: #8B0029;
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin: 0;
-  flex: 1;
-  margin-right: 12px;
-}
-
-.eventMenu {
-  background: linear-gradient(135deg, #B91C43, #E8405A);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(185, 28, 67, 0.2);
-}
-
-.eventDetails {
-  margin-bottom: 16px;
-}
-
-.eventDetail {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.detailIcon {
-  margin-right: 8px;
-  width: 16px;
-}
-
-.eventContent {
-  margin-bottom: 16px;
-}
-
-.eventContent p {
-  color: #555;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.eventFooter {
-  padding-top: 16px;
-  border-top: 1px solid rgba(139, 0, 41, 0.1);
-}
-
-.uploadDate {
-  color: #999;
-  font-size: 0.8rem;
-}
+/* Legacy event card styles removed - now using ScheduleTile component */
 
 @media (max-width: 768px) {
   .container {
@@ -216,21 +177,9 @@
     font-size: 1.5rem;
   }
 
-  .eventGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .eventList {
+    gap: 8px;
   }
 
-  .eventCard {
-    padding: 20px;
-  }
-
-  .eventHeader {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .eventTitle {
-    margin-right: 0;
-  }
+  /* Mobile styles handled by ScheduleTile component */
 }
