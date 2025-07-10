@@ -1,9 +1,13 @@
+version: 3.3'
+
 services:
   frontend:
     image: jjoonleo/kubc-frontend
     container_name: frontend
     ports:
       - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
     restart: unless-stopped
     networks:
       - frontend
