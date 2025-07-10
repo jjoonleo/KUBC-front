@@ -9,7 +9,6 @@ import { MenuType, getMenuTypeLabel } from '../../types/entities/event';
 import styles from './EventCreationForm.module.css';
 
 const EventCreationForm: React.FC = () => {
-  // State managementdd
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<EventFormData>>({});
   const [submitting, setSubmitting] = useState(false);
