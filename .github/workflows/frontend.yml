@@ -45,7 +45,11 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -f deployment/docker/Dockerfile -t $DOCKER_IMAGE_NAME .
+          docker build -f deployment/docker/Dockerfile \
+            --build-arg NODE_ENV="${{ vars.NODE_ENV }}" \
+            --build-arg REACT_APP_API_BASE_URL="${{ vars.REACT_APP_API_BASE_URL }}" \
+            --build-arg REACT_APP_NAVER_LOGIN_ENDPOINT="${{ vars.REACT_APP_NAVER_LOGIN_ENDPOINT }}" \
+            -t $DOCKER_IMAGE_NAME .
           echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
           docker push $DOCKER_IMAGE_NAME
 
