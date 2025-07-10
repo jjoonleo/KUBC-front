@@ -48,6 +48,12 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           port: 22
+          envs: NODE_ENV,REACT_APP_API_BASE_URL,REACT_APP_NAVER_LOGIN_ENDPOINT
+        env:
+          NODE_ENV: ${{ vars.NODE_ENV }}
+          REACT_APP_API_BASE_URL: ${{ vars.REACT_APP_API_BASE_URL }}
+          REACT_APP_NAVER_LOGIN_ENDPOINT: ${{ vars.REACT_APP_NAVER_LOGIN_ENDPOINT }}
+          COMPOSE_PROJECT_NAME: ${{ vars.COMPOSE_PROJECT_NAME }}
           script: |
             cd /home/ubuntu/app
 
@@ -69,5 +75,8 @@ jobs:
             # Pull latest images
             sudo docker compose -f deployment/docker-compose/compose.yml pull
 
-            # Start services
-            sudo docker compose -f deployment/docker-compose/compose.yml up -d --build
+            # Start services with environment variables
+            sudo NODE_ENV="$NODE_ENV" \
+                 REACT_APP_API_BASE_URL="$REACT_APP_API_BASE_URL" \
+                 REACT_APP_NAVER_LOGIN_ENDPOINT="$REACT_APP_NAVER_LOGIN_ENDPOINT" \
+                 docker compose -f deployment/docker-compose/compose.yml up -d --build
