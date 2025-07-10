@@ -28,6 +28,7 @@ jobs:
           port: 22
           script: |
             sudo mkdir -p /home/ubuntu/app/deployment/docker-compose
+            sudo mkdir -p /home/ubuntu/frontend
             sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend
             sudo chmod -R 755 /home/ubuntu/frontend
 
