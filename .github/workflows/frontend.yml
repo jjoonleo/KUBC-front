@@ -94,9 +94,6 @@ jobs:
           script: |
             cd /home/ubuntu/frontend
 
-            # Set compose project name
-            export COMPOSE_PROJECT_NAME=${{ vars.COMPOSE_PROJECT_NAME }}
-
             # Clean up any existing containers
             echo "Stopping and removing existing frontend containers..."
             sudo docker stop frontend || true
