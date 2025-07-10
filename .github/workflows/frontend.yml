@@ -28,8 +28,8 @@ jobs:
           port: 22
           script: |
             sudo mkdir -p /home/ubuntu/app/deployment/docker-compose
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/app
-            sudo chmod -R 755 /home/ubuntu/app
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend
+            sudo chmod -R 755 /home/ubuntu/frontend
 
       - name: Copy deployment files to EC2
         uses: appleboy/scp-action@master
@@ -39,7 +39,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           port: 22
           source: "deployment/docker-compose/*"
-          target: "/home/ubuntu/app"
+          target: "/home/ubuntu/frontend"
 
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@master
@@ -55,7 +55,7 @@ jobs:
           REACT_APP_NAVER_LOGIN_ENDPOINT: ${{ vars.REACT_APP_NAVER_LOGIN_ENDPOINT }}
           COMPOSE_PROJECT_NAME: ${{ vars.COMPOSE_PROJECT_NAME }}
           script: |
-            cd /home/ubuntu/app
+            cd /home/ubuntu/frontend
 
             # Clean up any existing containers
             echo "Stopping and removing existing frontend containers..."
