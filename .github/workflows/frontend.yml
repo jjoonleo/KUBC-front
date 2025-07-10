@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "src/**"
-      - "public/**"
-      - "package.json"
-      - "package-lock.json"
-      - "deployment/**"
 
 jobs:
   build:
