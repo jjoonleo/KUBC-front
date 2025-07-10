@@ -32,6 +32,10 @@ jobs:
 
       - name: Build React app
         run: npm run build
+        env:
+          NODE_ENV: ${{ vars.NODE_ENV }}
+          REACT_APP_API_BASE_URL: ${{ vars.REACT_APP_API_BASE_URL }}
+          REACT_APP_NAVER_LOGIN_ENDPOINT: ${{ vars.REACT_APP_NAVER_LOGIN_ENDPOINT }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3

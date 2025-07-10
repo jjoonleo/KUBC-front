@@ -1,6 +1,17 @@
 # Build stage
 FROM node:18-alpine AS build
 WORKDIR /app
+
+# Accept build arguments
+ARG NODE_ENV
+ARG REACT_APP_API_BASE_URL
+ARG REACT_APP_NAVER_LOGIN_ENDPOINT
+
+# Set environment variables
+ENV NODE_ENV=$NODE_ENV
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
+ENV REACT_APP_NAVER_LOGIN_ENDPOINT=$REACT_APP_NAVER_LOGIN_ENDPOINT
+
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 COPY . .
