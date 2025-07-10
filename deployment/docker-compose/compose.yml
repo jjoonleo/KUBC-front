@@ -1,3 +1,4 @@
+name: kubc
 services:
   frontend:
     image: jjoonleo/kubc-frontend
