@@ -1,0 +1,84 @@
+version: '3'
+
+env:
+  NODE_ENV: development
+  REACT_APP_API_BASE_URL: http://localhost:8080/api
+  REACT_APP_NAVER_LOGIN_ENDPOINT: https://nid.naver.com/oauth2.0/authorize
+
+tasks:
+  build:
+    desc: Build the Docker image for the frontend
+    dir: .
+    cmds:
+      - |
+        docker build \
+          --build-arg NODE_ENV={{.NODE_ENV}} \
+          --build-arg REACT_APP_API_BASE_URL={{.REACT_APP_API_BASE_URL}} \
+          --build-arg REACT_APP_NAVER_LOGIN_ENDPOINT={{.REACT_APP_NAVER_LOGIN_ENDPOINT}} \
+          -t jjoonleo/kubc-frontend \
+          -f deployment/docker/Dockerfile \
+          .
+    sources:
+      - src/**/*
+      - public/**/*
+      - package*.json
+      - deployment/docker/Dockerfile
+    generates:
+      - .docker-build-timestamp
+    method: timestamp
+
+  up:
+    desc: Start the application using docker-compose
+    dir: deployment/docker-compose
+    cmds:
+      - docker-compose up -d
+    deps: [build]
+
+  down:
+    desc: Stop the application containers
+    dir: deployment/docker-compose
+    cmds:
+      - docker-compose down
+
+  logs:
+    desc: Show application logs
+    dir: deployment/docker-compose
+    cmds:
+      - docker-compose logs -f
+
+  restart:
+    desc: Restart the application (rebuild and run)
+    cmds:
+      - task: down
+      - task: build
+      - task: up
+
+  clean:
+    desc: Clean up Docker images and containers
+    cmds:
+      - docker-compose -f deployment/docker-compose/compose.yml down --volumes --remove-orphans
+      - docker rmi jjoonleo/kubc-frontend || true
+      - docker system prune -f
+
+  dev:
+    desc: Start development server (not in Docker)
+    dir: .
+    cmds:
+      - npm start
+
+  install:
+    desc: Install dependencies
+    dir: .
+    cmds:
+      - npm ci --legacy-peer-deps
+
+  run:
+    desc: Build and run the application (main task)
+    cmds:
+      - task: build
+      - task: up
+
+  status:
+    desc: Show status of running containers
+    cmds:
+      - docker-compose -f deployment/docker-compose/compose.yml ps 

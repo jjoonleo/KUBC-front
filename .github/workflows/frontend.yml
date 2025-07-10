@@ -109,6 +109,9 @@ jobs:
             # Login to DockerHub
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
+            # Set compose project name
+            export COMPOSE_PROJECT_NAME=${{ vars.COMPOSE_PROJECT_NAME }}
+
             # Stop and remove containers managed by docker-compose
             sudo -E docker-compose -f deployment/docker-compose/compose.yml down
 
