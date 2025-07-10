@@ -10,7 +10,6 @@ on:
       - "package.json"
       - "package-lock.json"
       - "deployment/**"
-      - "github/workflows/frontend.yml"
 
 jobs:
   build:
