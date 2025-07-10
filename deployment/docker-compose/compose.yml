@@ -1,15 +1,6 @@
 services:
   frontend:
-    # Comment out image for local development to force local build
-    # image: jjoonleo/kubc-frontend
-    container_name: kubc_frontend
-    build:
-      context: ../../
-      dockerfile: deployment/docker/Dockerfile
-      args:
-        NODE_ENV: ${NODE_ENV:-development}
-        REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
-        REACT_APP_NAVER_LOGIN_ENDPOINT: ${REACT_APP_NAVER_LOGIN_ENDPOINT}
+    image: jjoonleo/kubc-frontend
     ports:
       - "3000:3000"
     environment:
