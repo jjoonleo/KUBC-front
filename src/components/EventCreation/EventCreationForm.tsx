@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addEvent } from '../../store/slices/eventsSlice';
 import { EventService } from '../../services/eventService';
 import { EventFormData, EventCreateRequest } from '../../types/dtos/event';
+import { MenuType, getMenuTypeLabel } from '../../types/entities/event';
 import styles from './EventCreationForm.module.css';
 
 const EventCreationForm: React.FC = () => {
@@ -14,12 +15,13 @@ const EventCreationForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
 
   const {
     register: registerStep1,
     handleSubmit: handleSubmitStep1,
     formState: { errors: errorsStep1 }
-  } = useForm<Pick<EventFormData, 'dateTime' | 'menuId' | 'place' | 'maxParticipants'>>();
+  } = useForm<Pick<EventFormData, 'dateTime' | 'menuId' | 'place' | 'maxParticipants' | 'uploadAt' | 'confirmedMemberAt'>>();
 
   const {
     register: registerStep2,
@@ -27,7 +29,7 @@ const EventCreationForm: React.FC = () => {
     formState: { errors: errorsStep2 }
   } = useForm<Pick<EventFormData, 'subject' | 'content'>>();
 
-  const onSubmitStep1: SubmitHandler<Pick<EventFormData, 'dateTime' | 'menuId' | 'place' | 'maxParticipants'>> = (data) => {
+  const onSubmitStep1: SubmitHandler<Pick<EventFormData, 'dateTime' | 'menuId' | 'place' | 'maxParticipants' | 'uploadAt' | 'confirmedMemberAt'>> = (data) => {
     setFormData(prev => ({ ...prev, ...data }));
     setError(null);
     setCurrentStep(2);
@@ -35,6 +37,11 @@ const EventCreationForm: React.FC = () => {
 
   const onSubmitStep2: SubmitHandler<Pick<EventFormData, 'subject' | 'content'>> = async (data) => {
     const completeFormData = { ...formData, ...data } as EventFormData;
+    
+    if (!user) {
+      setError('사용자 인증이 필요합니다. 다시 로그인해주세요.');
+      return;
+    }
     
     try {
       setSubmitting(true);
@@ -48,6 +55,8 @@ const EventCreationForm: React.FC = () => {
         maxParticipants: completeFormData.maxParticipants,
         subject: completeFormData.subject,
         content: completeFormData.content,
+        uploadAt: new Date(completeFormData.uploadAt),
+        confirmedMemberAt: new Date(completeFormData.confirmedMemberAt),
       };
 
       // Call backend API using axios
@@ -107,16 +116,22 @@ const EventCreationForm: React.FC = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="menuId">메뉴 ID</label>
-              <input
-                type="number"
+              <label htmlFor="menuId">메뉴 타입</label>
+              <select
                 id="menuId"
                 {...registerStep1('menuId', { 
-                  required: '메뉴 ID를 입력해주세요.',
-                  min: { value: 1, message: '메뉴 ID는 1 이상이어야 합니다.' }
+                  required: '메뉴 타입을 선택해주세요.',
+                  valueAsNumber: true
                 })}
                 className={errorsStep1.menuId ? styles.error : ''}
-              />
+              >
+                <option value="">메뉴 타입을 선택하세요</option>
+                <option value={MenuType.FREE_BOARD}>{getMenuTypeLabel(MenuType.FREE_BOARD)}</option>
+                <option value={MenuType.REGULAR_MEETING_NOTICE}>{getMenuTypeLabel(MenuType.REGULAR_MEETING_NOTICE)}</option>
+                <option value={MenuType.GENERAL_NOTICE}>{getMenuTypeLabel(MenuType.GENERAL_NOTICE)}</option>
+                <option value={MenuType.ATTENDEE_LIST}>{getMenuTypeLabel(MenuType.ATTENDEE_LIST)}</option>
+                <option value={MenuType.LIGHTNING_MEETING}>{getMenuTypeLabel(MenuType.LIGHTNING_MEETING)}</option>
+              </select>
               {errorsStep1.menuId && <span className={styles.errorMessage}>{errorsStep1.menuId.message}</span>}
             </div>
 
@@ -139,11 +154,34 @@ const EventCreationForm: React.FC = () => {
                 id="maxParticipants"
                 {...registerStep1('maxParticipants', { 
                   required: '최대 참가자 수를 입력해주세요.',
-                  min: { value: 1, message: '최대 참가자 수는 1명 이상이어야 합니다.' }
+                  min: { value: 1, message: '최대 참가자 수는 1명 이상이어야 합니다.' },
+                  valueAsNumber: true
                 })}
                 className={errorsStep1.maxParticipants ? styles.error : ''}
               />
               {errorsStep1.maxParticipants && <span className={styles.errorMessage}>{errorsStep1.maxParticipants.message}</span>}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="uploadAt">업로드 시간</label>
+              <input
+                type="datetime-local"
+                id="uploadAt"
+                {...registerStep1('uploadAt', { required: '업로드 시간을 입력해주세요.' })}
+                className={errorsStep1.uploadAt ? styles.error : ''}
+              />
+              {errorsStep1.uploadAt && <span className={styles.errorMessage}>{errorsStep1.uploadAt.message}</span>}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="confirmedMemberAt">참가자 확정 시간</label>
+              <input
+                type="datetime-local"
+                id="confirmedMemberAt"
+                {...registerStep1('confirmedMemberAt', { required: '참가자 확정 시간을 입력해주세요.' })}
+                className={errorsStep1.confirmedMemberAt ? styles.error : ''}
+              />
+              {errorsStep1.confirmedMemberAt && <span className={styles.errorMessage}>{errorsStep1.confirmedMemberAt.message}</span>}
             </div>
 
             <div className={styles.buttonGroup}>
