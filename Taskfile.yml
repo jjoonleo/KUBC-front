@@ -1,9 +1,12 @@
 version: '3'
 
-env:
-  NODE_ENV: development
-  REACT_APP_API_BASE_URL: http://localhost:8080/api
-  REACT_APP_NAVER_LOGIN_ENDPOINT: https://nid.naver.com/oauth2.0/authorize
+dotenv: ['.env']
+
+# Environment variables are now loaded from .env file
+# env:
+#   NODE_ENV: development
+#   REACT_APP_API_BASE_URL: http://localhost/api
+#   REACT_APP_NAVER_LOGIN_ENDPOINT: https://nid.naver.com/oauth2.0/authorize
 
 tasks:
   build:
